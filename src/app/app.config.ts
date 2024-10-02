@@ -3,8 +3,10 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { provideFirestore } from '@angular/fire/firestore';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +24,6 @@ export const appConfig: ApplicationConfig = {
         appId: '1:607297551023:web:ea52b39d51426b8eb0b25a',
       })
     ),
-    provideDatabase(() => getDatabase()),
+    provideFirestore(() => getFirestore()),
   ],
 };

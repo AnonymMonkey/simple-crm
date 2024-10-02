@@ -12,15 +12,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { User } from '../../models/user.class';
 import { FormsModule } from '@angular/forms';
-import { getDatabase, ref, set } from '@angular/fire/database';
-import { Database } from 'firebase/database';
+import { Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dialog-add-user',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     MatDialogContent,
     MatDialogActions,
@@ -30,6 +33,7 @@ import { Database } from 'firebase/database';
     MatInputModule,
     MatFormFieldModule,
     MatDatepickerModule,
+    MatProgressBarModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './dialog-add-user.component.html',
@@ -37,30 +41,31 @@ import { Database } from 'firebase/database';
 })
 export class DialogAddUserComponent {
   readonly dialogRef = inject(MatDialogRef<DialogAddUserComponent>);
-  database: Database = getDatabase();
+  firestore: Firestore = inject(Firestore);
+
+  loading = false;
 
   user: User = new User();
   birthDate: Date | undefined;
 
-  onNoClick(): void {
+  constructor() {}
+
+  closeDialog(): void {
     this.dialogRef.close();
   }
 
   async saveUser() {
-    this.user.birthDate = this.birthDate?.getTime();
-    console.log('user is', this.user);
-
+    this.loading = true;
     try {
-      const userRef = ref(
-        this.database,
-        'users/' +
-          this.user.lastName?.toLowerCase() +
-          '_' +
-          this.user.firstName?.toLowerCase()
-      );
-      await set(userRef, this.user.toJSON());
+      this.user.birthDate = this.birthDate?.getTime();
+      console.log('user is', this.user);
+
+      await addDoc(collection(this.firestore, 'users'), this.user.toJSON());
+      this.closeDialog();
     } catch (error) {
       console.error('Error adding user:', error);
+    } finally {
+      this.loading = false;
     }
   }
 }
