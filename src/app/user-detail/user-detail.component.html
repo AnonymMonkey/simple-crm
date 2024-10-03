@@ -1,1 +1,41 @@
-<p>user-detail works!</p>
+<div *ngIf="user | async as userData">
+  <mat-card class="user-detail-header">
+    <button class="icon" mat-icon-button [matMenuTriggerFor]="mainMenu">
+      <mat-icon fontIcon="more_vert"></mat-icon>
+    </button>
+    <mat-menu #mainMenu="matMenu">
+      <button mat-menu-item (click)="editUser()">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+    </mat-menu>
+    <div>
+      <img src="assets/img/placeholder-man.webp" alt="" />
+      <div class="user-detail-header-title">
+        <mat-card-title
+          >{{ userData.firstName }} {{ userData.lastName }}</mat-card-title
+        >
+        <a href="mailto:{{ userData.email }}">{{ userData.email }}</a>
+      </div>
+    </div>
+  </mat-card>
+  <mat-card class="adress-area">
+    <button class="icon" mat-icon-button [matMenuTriggerFor]="adressMenu">
+      <mat-icon fontIcon="more_vert"></mat-icon>
+    </button>
+    <mat-menu #adressMenu="matMenu">
+      <button mat-menu-item (click)="editUserAdress()">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+    </mat-menu>
+    <mat-card-header>
+      <mat-card-title>Adress</mat-card-title>
+      <mat-card-subtitle>{{ userData.street }}</mat-card-subtitle>
+      <mat-card-subtitle
+        >{{ userData.zipCode }} {{ userData.city }}</mat-card-subtitle
+      >
+    </mat-card-header>
+    <mat-card-content> </mat-card-content>
+  </mat-card>
+</div>
