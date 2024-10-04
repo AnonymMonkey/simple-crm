@@ -8,6 +8,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute } from '@angular/router';
 import { doc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
+import { DialogEditAdressComponent } from '../dialog-edit-adress/dialog-edit-adress.component';
+import { User } from '../../models/user.class';
 
 @Component({
   selector: 'app-user-detail',
@@ -23,20 +27,33 @@ import { Observable } from 'rxjs';
   styleUrl: './user-detail.component.scss',
 })
 export class UserDetailComponent {
-  user: Observable<any>;
+  user$: Observable<any>;
   firestore: Firestore = inject(Firestore);
 
-  bankName: string = '';
+  userID: string = '';
 
-  constructor(private route: ActivatedRoute) {
-    this.bankName = this.route.snapshot.params['id'];
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) {
+    this.userID = this.route.snapshot.params['id'];
 
-    const userDoc = doc(this.firestore, 'users/' + this.bankName);
-    this.user = docData(userDoc, { idField: 'id' });
-    console.log(this.user);
+    const userDoc = doc(this.firestore, 'users/' + this.userID);
+    this.user$ = docData(userDoc, { idField: 'id' });
   }
 
-  editUser() {}
+  editUser() {
+    const dialog = this.dialog.open(DialogEditUserComponent, {
+      data: {
+        userID: this.userID,
+        user$: this.user$,
+      },
+    });
+  }
 
-  editUserAdress() {}
+  editUserAdress() {
+    const dialog = this.dialog.open(DialogEditAdressComponent, {
+      data: {
+        userID: this.userID,
+        user$: this.user$,
+      },
+    });
+  }
 }

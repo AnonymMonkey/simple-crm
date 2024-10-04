@@ -1,1 +1,49 @@
-<p>dialog-edit-adress works!</p>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+<h2 mat-dialog-title>Edit User</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Street + House No.</mat-label>
+    <input
+      [disabled]="loading"
+      [(ngModel)]="userData.street"
+      matInput
+      placeholder="Placeholder"
+    />
+  </mat-form-field>
+
+  <div class="add-user-inputs">
+    <mat-form-field appearance="outline">
+      <mat-label>Zip code</mat-label>
+      <input
+        [disabled]="loading"
+        [(ngModel)]="userData.zipCode"
+        matInput
+        placeholder="Placeholder"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>City</mat-label>
+      <input
+        [disabled]="loading"
+        [(ngModel)]="userData.city"
+        matInput
+        placeholder="Placeholder"
+      />
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button [disabled]="loading" mat-button (click)="closeDialog()">
+    Cancel
+  </button>
+  <button
+    [disabled]="loading"
+    mat-button
+    (click)="editAdressData()"
+    cdkFocusInitial
+  >
+    Save
+  </button>
+</mat-dialog-actions>
