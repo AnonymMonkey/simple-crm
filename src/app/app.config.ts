@@ -3,9 +3,9 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideFirebaseApp } from '@angular/fire/app';
+import { FirebaseAppModule, provideFirebaseApp } from '@angular/fire/app';
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { Firestore, getFirestore } from 'firebase/firestore';
 import { provideFirestore } from '@angular/fire/firestore';
 
 export const appConfig: ApplicationConfig = {

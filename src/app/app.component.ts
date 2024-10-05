@@ -28,7 +28,6 @@ import { Firestore, FirestoreModule } from '@angular/fire/firestore';
 })
 export class AppComponent {
   firestore: Firestore = inject(Firestore);
-  title = 'simple-crm';
 
   constructor() {}
 }
